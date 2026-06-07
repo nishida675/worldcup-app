@@ -14,7 +14,9 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://worldcup-prediction-app.vercel.app/";
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://worldcup-prediction-app.vercel.app/");
 const SITE_NAME = "W杯優勝予想しようよ";
 const SITE_DESCRIPTION =
   "あなたのW杯優勝国予想を画像に！予選グループから国を選択するだけで、SNSシェア用のカッコいい優勝予想画像を秒速で生成・ダウンロードできます。";
@@ -57,6 +59,12 @@ export const metadata: Metadata = {
         alt: "W杯優勝予想しようよ - 優勝国を画像でシェアしよう",
       },
     ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: SITE_URL,
