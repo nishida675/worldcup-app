@@ -1,7 +1,14 @@
 import { ImageResponse } from "next/og";
 import { getCountryById } from "../../data/countries";
+import fs from "fs";
+import path from "path";
 
-export const runtime = "edge";
+export const runtime = "nodejs"; // "edge" から変更
+
+// フォント読み込み（ビルド時に一度だけ）
+const fontData = fs.readFileSync(
+  path.join(process.cwd(), "public/fonts/NotoSansJP-Black.ttf"),
+);
 
 // Emojis for OGP mascots
 function getAnimalEmoji(countryId: string): string {
@@ -32,24 +39,22 @@ export async function GET(request: Request) {
 
     if (!country) {
       return new ImageResponse(
-        (
-          <div
-            style={{
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              background: "#6366F1",
-              color: "#fff",
-              fontSize: "48px",
-              fontWeight: 900,
-            }}
-          >
-            W杯優勝予想しようよ 🏆
-          </div>
-        ),
-        { ...size }
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "#6366F1",
+            color: "#fff",
+            fontSize: "48px",
+            fontWeight: 900,
+          }}
+        >
+          W杯優勝予想しようよ 🏆
+        </div>,
+        { ...size },
       );
     }
 
@@ -57,144 +62,201 @@ export async function GET(request: Request) {
     const animalEmoji = getAnimalEmoji(country.id);
 
     return new ImageResponse(
-      (
+      <div
+        style={{
+          height: "100%",
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "space-between",
+          backgroundColor: "#fff",
+          position: "relative",
+          padding: "50px 80px 45px 80px",
+        }}
+      >
+        {/* Background flag image (more reliable for satori) */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={flagUrl}
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+          }}
+        />
+
+        {/* Soft pop white gradient wash */}
         <div
           style={{
-            height: "100%",
-            width: "100%",
+            position: "absolute",
+            inset: 0,
+            background:
+              "radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.3) 60%, rgba(255,255,255,0.6) 100%)",
             display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "space-between",
-            backgroundColor: "#fff",
-            position: "relative",
-            padding: "50px 80px 45px 80px",
+          }}
+        />
+
+        {/* Confetti decorations */}
+        <div
+          style={{
+            position: "absolute",
+            top: "12%",
+            left: "18%",
+            fontSize: "36px",
+            display: "flex",
           }}
         >
-          {/* Background flag image (more reliable for satori) */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={flagUrl}
-            style={{
-              position: "absolute",
-              inset: 0,
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-            }}
-          />
+          ✨
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            top: "78%",
+            left: "45%",
+            fontSize: "32px",
+            display: "flex",
+          }}
+        >
+          🎉
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            top: "15%",
+            right: "15%",
+            fontSize: "40px",
+            display: "flex",
+          }}
+        >
+          ✨
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            top: "75%",
+            left: "14%",
+            fontSize: "28px",
+            display: "flex",
+          }}
+        >
+          ⚡
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            top: "76%",
+            right: "18%",
+            fontSize: "34px",
+            display: "flex",
+          }}
+        >
+          🎉
+        </div>
 
-          {/* Soft pop white gradient wash */}
+        {/* Thick double pop borders */}
+        <div
+          style={{
+            position: "absolute",
+            top: 25,
+            left: 25,
+            right: 25,
+            bottom: 25,
+            border: "8px solid #000000",
+            borderRadius: "32px",
+            display: "flex",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            top: 33,
+            left: 33,
+            right: 33,
+            bottom: 33,
+            border: "3px solid #FFFFFF",
+            borderRadius: "26px",
+            display: "flex",
+          }}
+        />
+
+        {/* Top: Subtitle */}
+        <div
+          style={{
+            fontSize: "24px",
+            fontWeight: 900,
+            color: "#FBBF24",
+            textShadow: "2.5px 2.5px 0px #000000",
+            letterSpacing: "4px",
+            zIndex: 10,
+          }}
+        >
+          2026 WORLD CUP PREDICTION
+        </div>
+
+        {/* Middle: Trophy and Animal side by side (leaving the center free) */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
+            flex: 1,
+            zIndex: 10,
+          }}
+        >
+          {/* Left: Trophy */}
           <div
             style={{
-              position: "absolute",
-              inset: 0,
-              background: "radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.3) 60%, rgba(255,255,255,0.6) 100%)",
+              fontSize: "140px",
+              textShadow: "4px 4px 0px #000000",
               display: "flex",
-            }}
-          />
-
-          {/* Confetti decorations */}
-          <div style={{ position: "absolute", top: "12%", left: "18%", fontSize: "36px", display: "flex" }}>✨</div>
-          <div style={{ position: "absolute", top: "78%", left: "45%", fontSize: "32px", display: "flex" }}>🎉</div>
-          <div style={{ position: "absolute", top: "15%", right: "15%", fontSize: "40px", display: "flex" }}>✨</div>
-          <div style={{ position: "absolute", top: "75%", left: "14%", fontSize: "28px", display: "flex" }}>⚡</div>
-          <div style={{ position: "absolute", top: "76%", right: "18%", fontSize: "34px", display: "flex" }}>🎉</div>
-
-          {/* Thick double pop borders */}
-          <div
-            style={{
-              position: "absolute",
-              top: 25,
-              left: 25,
-              right: 25,
-              bottom: 25,
-              border: "8px solid #000000",
-              borderRadius: "32px",
-              display: "flex",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              top: 33,
-              left: 33,
-              right: 33,
-              bottom: 33,
-              border: "3px solid #FFFFFF",
-              borderRadius: "26px",
-              display: "flex",
-            }}
-          />
-
-          {/* Top: Subtitle */}
-          <div
-            style={{
-              fontSize: "24px",
-              fontWeight: 900,
-              color: "#FBBF24",
-              textShadow: "2.5px 2.5px 0px #000000",
-              letterSpacing: "4px",
-              zIndex: 10,
             }}
           >
-            2026 WORLD CUP PREDICTION
+            🏆
           </div>
 
-          {/* Middle: Trophy and Animal side by side (leaving the center free) */}
+          {/* Right: Mascot */}
           <div
             style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              width: "100%",
-              flex: 1,
-              zIndex: 10,
-            }}
-          >
-            {/* Left: Trophy */}
-            <div
-              style={{
-                fontSize: "140px",
-                textShadow: "4px 4px 0px #000000",
-                display: "flex",
-              }}
-            >
-              🏆
-            </div>
-
-            {/* Right: Mascot */}
-            <div
-              style={{
-                fontSize: "140px",
-                textShadow: "4px 4px 0px #000000",
-                display: "flex",
-              }}
-            >
-              {animalEmoji}
-            </div>
-          </div>
-
-          {/* Bottom: Unified single-line prediction text */}
-          <div
-            style={{
-              fontSize: "64px",
-              fontWeight: 900,
-              color: "#FB7185",
-              textShadow: "4.5px 4.5px 0px #000000",
-              zIndex: 10,
-              textAlign: "center",
+              fontSize: "140px",
+              textShadow: "4px 4px 0px #000000",
               display: "flex",
             }}
           >
-            W杯優勝は、{country.name.toUpperCase()}!
+            {animalEmoji}
           </div>
         </div>
-      ),
+
+        {/* Bottom: Unified single-line prediction text */}
+        <div
+          style={{
+            fontSize: "64px",
+            fontWeight: 900,
+            color: "#FB7185",
+            textShadow: "4.5px 4.5px 0px #000000",
+            zIndex: 10,
+            textAlign: "center",
+            display: "flex",
+          }}
+        >
+          W杯優勝は、{country.name.toUpperCase()}!
+        </div>
+      </div>,
       {
         ...size,
-      }
+        fonts: [
+          {
+            name: "NotoSansJP",
+            data: fontData,
+            weight: 900,
+            style: "normal",
+          },
+        ],
+      },
     );
   } catch (error) {
     console.error("Failed to generate dynamic OGP image", error);

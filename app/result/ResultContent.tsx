@@ -199,7 +199,7 @@ export default function ResultContent() {
       console.warn("Clipboard copy failed, fallback to text-only share", err);
     }
 
-    const shareText = `2026年W杯、私の優勝予想は「${country.name}」！\n#こめこめW杯予言祭り\n#W杯優勝予想しようよ\n#当てたらこめがなんかくれるかも`;
+    const shareText = `FIFAワールドカップ2026、私の優勝予想は「${country.name}」！\n#こめこめW杯予言祭り\n#W杯優勝予想しようよ\n#当てたらこめがなんかくれるかも`;
     const baseUrl =
       typeof window !== "undefined"
         ? window.location.origin
