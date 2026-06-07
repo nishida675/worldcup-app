@@ -17,7 +17,7 @@ export async function generateMetadata({
   const headersList = await headers();
   const host = headersList.get("host") || "worldcup-prediction-app.vercel.app";
   const protocol = host.startsWith("localhost") || host.startsWith("127.0.0.1") ? "http" : "https";
-  const absoluteImageUrl = `${protocol}://${host}/result/opengraph-image?country=${countryId || ""}`;
+  const absoluteImageUrl = `${protocol}://${host}/api/og?country=${countryId || ""}`;
 
   const title = country ? `${country.name} 優勝予想` : "W杯優勝予想しようよ";
   const description = country
