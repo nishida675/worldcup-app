@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
+import { headers } from "next/headers";
 import ResultContent from "./ResultContent";
 import { getCountryById } from "../data/countries";
 
@@ -11,6 +12,12 @@ export async function generateMetadata({
   const resolvedSearchParams = await searchParams;
   const countryId = typeof resolvedSearchParams === "object" ? (resolvedSearchParams as any)?.country : undefined;
   const country = countryId ? getCountryById(countryId) : null;
+
+  // Dynamically resolve the absolute domain name using request headers
+  const headersList = await headers();
+  const host = headersList.get("host") || "worldcup-prediction-app.vercel.app";
+  const protocol = host.startsWith("localhost") || host.startsWith("127.0.0.1") ? "http" : "https";
+  const absoluteImageUrl = `${protocol}://${host}/result/opengraph-image?country=${countryId || ""}`;
 
   const title = country ? `${country.name} 優勝予想` : "W杯優勝予想しようよ";
   const description = country
@@ -25,7 +32,7 @@ export async function generateMetadata({
       description,
       images: [
         {
-          url: `/result/opengraph-image?country=${countryId || ""}`,
+          url: absoluteImageUrl,
           width: 1200,
           height: 630,
           alt: country ? `${country.name} 優勝予想` : "W杯優勝予想しようよ",
@@ -36,7 +43,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title,
       description,
-      images: [`/result/opengraph-image?country=${countryId || ""}`],
+      images: [absoluteImageUrl],
     },
   };
 }

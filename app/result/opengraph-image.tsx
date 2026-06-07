@@ -73,13 +73,23 @@ export default async function Image({
           alignItems: "center",
           justifyContent: "space-between",
           backgroundColor: "#fff",
-          backgroundImage: `url(${flagUrl})`,
-          backgroundSize: "100% 100%",
-          backgroundPosition: "center",
           position: "relative",
           padding: "50px 80px 45px 80px",
         }}
       >
+        {/* Background flag image (more reliable for satori) */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={flagUrl}
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+          }}
+        />
+
         {/* Soft pop white gradient wash */}
         <div
           style={{
