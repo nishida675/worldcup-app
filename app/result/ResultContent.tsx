@@ -204,7 +204,7 @@ export default function ResultContent() {
       typeof window !== "undefined"
         ? window.location.origin
         : "https://worldcup-prediction-app.vercel.app/";
-    const shareUrl = `${baseUrl}`;
+    const shareUrl = `${baseUrl}/result?country=${country.id}`;
     const twitterIntentUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
     window.open(twitterIntentUrl, "_blank", "noopener,noreferrer");
   };
