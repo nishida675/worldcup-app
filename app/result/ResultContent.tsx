@@ -181,23 +181,8 @@ export default function ResultContent() {
     document.body.removeChild(a);
   };
 
-  const handleXShare = async () => {
+  const handleXShare = () => {
     if (!country) return;
-
-    // Try to copy image to clipboard
-    try {
-      if (imageUrl) {
-        const response = await fetch(imageUrl);
-        const blob = await response.blob();
-        await navigator.clipboard.write([
-          new ClipboardItem({ [blob.type]: blob }),
-        ]);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 5000);
-      }
-    } catch (err) {
-      console.warn("Clipboard copy failed, fallback to text-only share", err);
-    }
 
     const shareText = `FIFAワールドカップ2026、私の優勝予想は「${country.name}」！\n#こめこめW杯予言祭り\n#W杯優勝予想しようよ\n#当てたらこめがなんかくれるかも`;
     const baseUrl =
